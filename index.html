@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World War II Chronicles</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- AOS Library CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            background-color: #0d1b2a;
+            overflow-x: hidden;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        /* Header and Navigation Styles */
+        header {
+            position: fixed;
+            width: 100%;
+            background: rgba(13, 27, 42, 0.9);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: background 0.3s ease;
+        }
+        header.scrolled {
+            background: rgba(13, 27, 42, 1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+        nav ul li {
+            margin-left: 30px;
+        }
+        nav ul li a {
+            font-size: 1em;
+            transition: color 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: #1f4068;
+        }
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #fff;
+        }
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: url('https://cdn.britannica.com/69/71369-050-062DA3E3/Erwin-Rommel-defenses-German-1944.jpg') center center/cover no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 27, 42, 0.6);
+        }
+        .hero-content {
+            position: relative;
+            text-align: center;
+            z-index: 1;
+            padding: 0 20px;
+        }
+        .hero-content h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease forwards;
+        }
+        .hero-content p {
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+        .hero-content a {
+            padding: 10px 20px;
+            background: #1f4068;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 1s;
+            opacity: 0;
+        }
+        .hero-content a:hover {
+            background: #16213e;
+        }
+        /* Sections */
+        main {
+            margin-top: 80px; /* To prevent content being hidden behind the fixed header */
+        }
+        section {
+            padding: 100px 50px;
+            min-height: 100vh;
+            background-size: cover;
+            background-attachment: fixed;
+            position: relative;
+        }
+        section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 27, 42, 0.7);
+        }
+        .section-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .section-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .section-content p {
+            font-size: 1.1em;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .card h3, .card h4 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+        .card p {
+            font-size: 0.95em;
+            text-align: left;
+        }
+        /* Footer */
+        footer {
+            padding: 50px 20px;
+            background: #0a1d2c;
+            text-align: center;
+        }
+        footer p {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        footer .social-icons {
+            margin-top: 20px;
+        }
+        footer .social-icons a {
+            margin: 0 10px;
+            color: #fff;
+            font-size: 1.5em;
+            transition: color 0.3s ease;
+        }
+        footer .social-icons a:hover {
+            color: #1f4068;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #1e2a38;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            position: relative;
+            animation: fadeInModal 0.5s;
+        }
+        .modal-close {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .modal-header h2 {
+            font-size: 2em;
+        }
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .modal-body img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .modal-body p {
+            text-align: left;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInModal {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            nav ul {
+                position: fixed;
+                top: 70px;
+                right: 0;
+                background: rgba(13, 27, 42, 0.95);
+                flex-direction: column;
+                width: 200px;
+                height: calc(100% - 70px);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+            nav ul.active {
+                transform: translateX(0);
+            }
+            nav ul li {
+                margin: 20px 0;
+                text-align: center;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .hero-content h1 {
+                font-size: 2.5em;
+            }
+            .hero-content p {
+                font-size: 1em;
+            }
+            section {
+                padding: 80px 20px;
+            }
+            .modal-content {
+                width: 100%;
+                max-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header and Navigation -->
+    <header id="navbar">
+        <div class="logo">WWII Chronicles</div>
+        <nav>
+            <div class="menu-toggle" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#timeline">Timeline</a></li>
+                <li><a href="#leaders">Leaders</a></li>
+                <li><a href="#battlefronts">Battlefronts</a></li>
+                <li><a href="#technology">Technology</a></li>
+                <li><a href="#aftermath">Aftermath</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content" data-aos="fade-up">
+            <h1>World War II</h1>
+            <p>An in-depth exploration of one of the most significant events in human history.</p>
+            <a href="#timeline">Discover More</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Timeline Section -->
+        <section id="timeline">
+            <div class="section-content" data-aos="fade-up">
+                <h2>Timeline</h2>
+                <p>Explore the chronological events that shaped the course of World War II.</p>
+                <ul class="grid battles-list">
+                    <li class="card" data-aos="zoom-in">
+                        <h4>1939: Invasion of Poland</h4>
+                        <p>Germany invades Poland on September 1, marking the beginning of WWII.</p>
+                    </li>
+                    <li class="card" data-aos="zoom-in" data-aos-delay="100">
+                        <h4>1940: Battle of Britain</h4>
+                        <p>The Royal Air Force defends the United Kingdom against large-scale attacks by the German Luftwaffe.</p>
+                    </li>
+                    <li class="card" data-aos="zoom-in" data-aos-delay="200">
+                        <h4>1941: Operation Barbarossa</h4>
+                        <p>Germany invades the Soviet Union, opening the Eastern Front.</p>
+                    </li>
+                    <li class="card" data-aos="zoom-in" data-aos-delay="300">
+                        <h4>1944: D-Day</h4>
+                        <p>Allied forces land on the beaches of Normandy, leading to the liberation of Western Europe.</p>
+                    </li>
+                    <li class="card" data-aos="zoom-in" data-aos-delay="400">
+                        <h4>1945: Fall of Berlin</h4>
+                        <p>Soviet forces capture Berlin, leading to the surrender of Nazi Germany.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Leaders Section -->
+        <section id="leaders">
+            <div class="section-content" data-aos="fade-up">
+                <h2>Leaders</h2>
+                <p>Meet the pivotal figures whose strategies and decisions influenced the course of World War II.</p>
+                <div class="grid leaders-grid">
+                    <!-- Leader 1 -->
+                    <div class="card" data-aos="fade-up" data-modal="churchill-modal">
+                        <img src="https://thedecisionlab.com/_next/image?url=https%3A%2F%2Fimages.prismic.io%2Fthedecisionlab%2Ff1f6655d-faea-4f64-a1d0-e76f3aa25b00_Sir_Winston_Churchill_%2528cropped%2529.jpg%3Fauto%3Dformat%2Ccompress&w=3840&q=75" alt="Winston Churchill" loading="lazy">
+                        <h3>Winston Churchill</h3>
+                        <p>Prime Minister of the United Kingdom from 1940 to 1945, Churchill was a key leader in the Allied resistance against Nazi Germany.</p>
+                    </div>
+                    <!-- Leader 2 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="100" data-modal="roosevelt-modal">
+                        <img src="https://www.amestrib.com/gcdn/authoring/2017/03/14/NATR/ghows-IA-4a8acdda-4050-415f-e053-0100007f14cf-eb45c9ff.jpeg?width=660&height=952&fit=crop&format=pjpg&auto=webp" alt="Franklin D. Roosevelt" loading="lazy">
+                        <h3>Franklin D. Roosevelt</h3>
+                        <p>The 32nd President of the United States, Roosevelt led the nation through the Great Depression and World War II.</p>
+                    </div>
+                    <!-- Leader 3 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="200" data-modal="stalin-modal">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/StalinCropped1943.jpg" alt="Joseph Stalin" loading="lazy">
+                        <h3>Joseph Stalin</h3>
+                        <p>Leader of the Soviet Union, Stalin played a crucial role in the defeat of Nazi Germany through the Eastern Front.</p>
+                    </div>
+                    <!-- Leader 4 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="300" data-modal="hitler-modal">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Adolf_Hitler_in_Color.jpg/800px-Adolf_Hitler_in_Color.jpg" alt="Adolf Hitler" loading="lazy">
+                        <h3>Adolf Hitler</h3>
+                        <p>Dictator of Nazi Germany, Hitler's aggressive expansionist policies were a primary catalyst for World War II.</p>
+                    </div>
+                    <!-- Leader 5 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="400" data-modal="mussolini-modal">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Benito_Mussolini_colored.jpg/640px-Benito_Mussolini_colored.jpg" alt="Benito Mussolini" loading="lazy">
+                        <h3>Benito Mussolini</h3>
+                        <p>Prime Minister and Duce of Italy, Mussolini was a leading figure in the Axis powers alongside Germany and Japan.</p>
+                    </div>
+                    <!-- Leader 6 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="500" data-modal="tojo-modal">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlVgQTiMaOR9S9EWSwXL6N9QIgkrRzEWIWLg&s" alt="Hideki Tojo" loading="lazy">
+                        <h3>Hideki Tojo</h3>
+                        <p>Prime Minister of Japan during much of World War II, Tojo was a general in the Imperial Japanese Army and a key architect of Japan's war strategy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Battlefronts Section -->
+        <section id="battlefronts">
+            <div class="section-content" data-aos="fade-up">
+                <h2>Battlefronts</h2>
+                <p>World War II was fought across multiple fronts around the globe. Explore the major theaters of war.</p>
+                <div class="grid leaders-grid">
+                    <!-- Battlefront 1 -->
+                    <div class="card" data-aos="fade-up">
+                        <img src="https://encyclopedia.ushmm.org/images/large/fb746038-63f4-4fdf-836b-c7af9c8a5898.gif" alt="European Front" loading="lazy">
+                        <h3>European Front</h3>
+                        <p>The primary theater of combat in Europe, featuring major battles such as the Battle of Stalingrad, Battle of Normandy, and the Siege of Leningrad.</p>
+                    </div>
+                    <!-- Battlefront 2 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="100">
+                        <img src="https://www.nationalww2museum.org/sites/default/files/2017-07/Pacific%20Strategy%20Map.jpg" alt="Pacific Front" loading="lazy">
+                        <h3>Pacific Front</h3>
+                        <p>Extensive naval and land battles between the Allies and Japan, including the Battle of Midway, Guadalcanal Campaign, and the Battle of Iwo Jima.</p>
+                    </div>
+                    <!-- Battlefront 3 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="200">
+                        <img src="https://www.ww2classroom.org/sites/default/files/maps/wie111.jpg" alt="North African Front" loading="lazy">
+                        <h3>North African Front</h3>
+                        <p>Fought in the deserts of North Africa, featuring key battles like El Alamein and Operation Torch.</p>
+                    </div>
+                    <!-- Battlefront 4 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="300">
+                        <img src="https://64.media.tumblr.com/711396b5e721ba75926f6570e73b1ab0/tumblr_pvyj46X0ls1rasnq9o1_500.jpg" alt="Italian Front" loading="lazy">
+                        <h3>Italian Front</h3>
+                        <p>Series of battles in Italy, including the Italian Campaign and the Battle of Monte Cassino.</p>
+                    </div>
+                    <!-- Battlefront 5 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="400">
+                        <img src="https://i.pinimg.com/736x/f0/05/4d/f0054d20211a589d128ab374de3a70ae.jpg" alt="Atlantic Front" loading="lazy">
+                        <h3>Atlantic Front</h3>
+                        <p>Naval warfare between the Allies and Axis powers, focusing on the Battle of the Atlantic and submarine warfare.</p>
+                    </div>
+                    <!-- Battlefront 6 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="500">
+                        <img src="https://onwar.com/wwii/maps/efront/t03c11p35.png" alt="Eastern Front" loading="lazy">
+                        <h3>Eastern Front</h3>
+                        <p>Massive and brutal conflict between Nazi Germany and the Soviet Union, marked by significant battles and immense casualties.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section id="technology">
+            <div class="section-content" data-aos="fade-up">
+                <h2>Technology & Innovations</h2>
+                <p>World War II spurred significant technological advancements and innovations that have shaped modern warfare and society.</p>
+                <div class="grid leaders-grid">
+                    <!-- Technology 1 -->
+                    <div class="card" data-aos="fade-up">
+                        <img src="https://assets.rbl.ms/25588119/origin.jpg" alt="Radar Technology" loading="lazy">
+                        <h3>Radar Technology</h3>
+                        <p>Developed to detect enemy aircraft and ships, radar played a crucial role in the Battle of Britain and naval warfare.</p>
+                    </div>
+                    <!-- Technology 2 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="100">
+                        <img src="https://www.nationalww2museum.org/sites/default/files/styles/wide_medium/public/2020-08/Toll%20cover%20Image%20-%20courtesy%20Harry%20S.%20Truman%20Library%20and%20Museum.jpg" alt="Atomic Bomb" loading="lazy">
+                        <h3>Atomic Bomb</h3>
+                        <p>The development and use of atomic bombs on Hiroshima and Nagasaki marked the first and only use of nuclear weapons in warfare.</p>
+                    </div>
+                    <!-- Technology 3 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="200">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Messerschmitt_Me_262A_at_the_National_Museum_of_the_USAF.jpg/800px-Messerschmitt_Me_262A_at_the_National_Museum_of_the_USAF.jpg" alt="Jet Aircraft" loading="lazy">
+                        <h3>Jet Aircraft</h3>
+                        <p>The introduction of jet-powered aircraft revolutionized air combat and post-war aviation.</p>
+                    </div>
+                    <!-- Technology 4 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="300">
+                        <img src="https://media.defense.gov/2007/Sep/18/2000450334/2000/2000/0/070918-F-1234S-003.JPG" alt="Cryptography" loading="lazy">
+                        <h3>Cryptography</h3>
+                        <p>Advancements in code-breaking, such as the cracking of the Enigma code, significantly impacted intelligence and strategy.</p>
+                    </div>
+                    <!-- Technology 5 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="400">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxvrveshkWRFi-r94vhaxd4eQV0mEAoPeO5Q&s" alt="Rocketry" loading="lazy">
+                        <h3>Rocketry</h3>
+                        <p>Developments in missile technology laid the groundwork for post-war space exploration and the Cold War arms race.</p>
+                    </div>
+                    <!-- Technology 6 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="500">
+                        <img src="https://nhd.org/wp-content/uploads/2022/11/Advancement-in-Medical-Technologu.jpg" alt="Medical Advances" loading="lazy">
+                        <h3>Medical Advances</h3>
+                        <p>WWII saw significant progress in medical treatments, including the mass production of penicillin and advancements in surgical techniques.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aftermath Section -->
+        <section id="aftermath">
+            <div class="section-content" data-aos="fade-up">
+                <h2>Aftermath</h2>
+                <p>The conclusion of World War II had profound and lasting effects on the global political landscape, economy, and society.</p>
+                <div class="grid leaders-grid">
+                    <!-- Aftermath 1 -->
+                    <div class="card" data-aos="fade-up">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_the_United_Nations.svg/1200px-Flag_of_the_United_Nations.svg.png" alt="United Nations" loading="lazy">
+                        <h3>Formation of the United Nations</h3>
+                        <p>Established in 1945 to promote international cooperation and prevent future conflicts.</p>
+                    </div>
+                    <!-- Aftermath 2 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="100">
+                        <img src="https://cdn.hswstatic.com/gif/cold-war-update.jpg" alt="Cold War" loading="lazy">
+                        <h3>Start of the Cold War</h3>
+                        <p>Political and military tension between the Soviet Union and the United States dominated the post-war era.</p>
+                    </div>
+                    <!-- Aftermath 3 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="200">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/British_Decolonisation_in_Africa.png/220px-British_Decolonisation_in_Africa.png" alt="Decolonization" loading="lazy">
+                        <h3>Decolonization</h3>
+                        <p>The war accelerated the process of decolonization, leading to independence for many nations in Asia and Africa.</p>
+                    </div>
+                    <!-- Aftermath 4 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="300">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Nachkriegsboom.svg/220px-Nachkriegsboom.svg.png" alt="Economic Impact" loading="lazy">
+                        <h3>Economic Impact</h3>
+                        <p>The war significantly altered global economies, leading to the rise of the United States and the Soviet Union as superpowers.</p>
+                    </div>
+                    <!-- Aftermath 5 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="400">
+                        <img src="https://statisticsanddata.org/wp-content/uploads/2021/03/maxresdefault-2.jpg" alt="Human Cost" loading="lazy">
+                        <h3>Human Cost</h3>
+                        <p>World War II resulted in unprecedented loss of life, with estimates of over 70 million fatalities worldwide.</p>
+                    </div>
+                    <!-- Aftermath 6 -->
+                    <div class="card" data-aos="fade-up" data-aos-delay="500">
+                        <img src="https://www.thenewatlantis.com/wp-content/uploads/legacy/20200226_TNA61Millsbanner.jpg" alt="Technological Legacy" loading="lazy">
+                        <h3>Technological Legacy</h3>
+                        <p>Many technological advancements from the war era continue to influence modern technology and warfare.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Leader Modals -->
+
+    <!-- Winston Churchill Modal -->
+    <div id="churchill-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="churchill-title">
+        <div class="modal-content">
+            <span class="modal-close" aria-label="Close modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="churchill-title">Winston Churchill</h2>
+            </div>
+            <div class="modal-body">
+                <img src="https://thedecisionlab.com/_next/image?url=https%3A%2F%2Fimages.prismic.io%2Fthedecisionlab%2Ff1f6655d-faea-4f64-a1d0-e76f3aa25b00_Sir_Winston_Churchill_%2528cropped%2529.jpg%3Fauto%3Dformat%2Ccompress&w=3840&q=75" alt="Winston Churchill" loading="lazy">
+                <p>
+                    Sir Winston Churchill served as the Prime Minister of the United Kingdom from 1940 to 1945 and again from 1951 to 1955. Renowned for his leadership during World War II, Churchill was instrumental in rallying British morale during the darkest days of the conflict. His speeches and radio broadcasts helped inspire British resistance, especially during the Battle of Britain and the Blitz. Beyond his wartime role, Churchill was also a prolific writer, earning the Nobel Prize in Literature in 1953 for his historical writings and oratory skills.
+                </p>
+                <p>
+                    **Key Achievements:**
+                    <ul>
+                        <li>Led the UK through World War II.</li>
+                        <li>Key strategist in the Allied victory.</li>
+                        <li>Authored numerous books on history and politics.</li>
+                        <li>Recipient of the Nobel Prize in Literature.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Franklin D. Roosevelt Modal -->
+    <div id="roosevelt-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="roosevelt-title">
+        <div class="modal-content">
+            <span class="modal-close" aria-label="Close modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="roosevelt-title">Franklin D. Roosevelt</h2>
+            </div>
+            <div class="modal-body">
+                <img src="https://www.amestrib.com/gcdn/authoring/2017/03/14/NATR/ghows-IA-4a8acdda-4050-415f-e053-0100007f14cf-eb45c9ff.jpeg?width=660&height=952&fit=crop&format=pjpg&auto=webp" alt="Franklin D. Roosevelt" loading="lazy">
+                <p>
+                    Franklin Delano Roosevelt, often referred to as FDR, was the 32nd President of the United States, serving an unprecedented four terms from 1933 to 1945. He led the nation through the Great Depression with his New Deal policies, which aimed to provide relief, recovery, and reform to the American economy. During World War II, Roosevelt played a crucial role in supporting the Allies, mobilizing American industry for the war effort, and shaping post-war international policies, including the establishment of the United Nations.
+                </p>
+                <p>
+                    **Key Achievements:**
+                    <ul>
+                        <li>Implemented the New Deal to combat the Great Depression.</li>
+                        <li>Led the U.S. through most of World War II.</li>
+                        <li>Established the United Nations.</li>
+                        <li>Authored numerous significant executive orders and policies.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Joseph Stalin Modal -->
+    <div id="stalin-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="stalin-title">
+        <div class="modal-content">
+            <span class="modal-close" aria-label="Close modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="stalin-title">Joseph Stalin</h2>
+            </div>
+            <div class="modal-body">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/StalinCropped1943.jpg" alt="Joseph Stalin" loading="lazy">
+                <p>
+                    Joseph Vissarionovich Stalin was the leader of the Soviet Union from the mid-1920s until his death in 1953. As the General Secretary of the Communist Party, Stalin consolidated power and led the USSR through significant transformations, including rapid industrialization and collectivization of agriculture. During World War II, Stalin was pivotal in the defeat of Nazi Germany, leading the Soviet Red Army in critical battles such as the Battle of Stalingrad and the Siege of Leningrad. However, his rule was also marked by widespread repression, political purges, and the establishment of a totalitarian regime.
+                </p>
+                <p>
+                    **Key Achievements:**
+                    <ul>
+                        <li>Led the Soviet Union during World War II.</li>
+                        <li>Orchestrated the defeat of Nazi Germany on the Eastern Front.</li>
+                        <li>Implemented policies of rapid industrialization and collectivization.</li>
+                        <li>Consolidated power to establish a totalitarian regime.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adolf Hitler Modal -->
+    <div id="hitler-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="hitler-title">
+        <div class="modal-content">
+            <span class="modal-close" aria-label="Close modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="hitler-title">Adolf Hitler</h2>
+            </div>
+            <div class="modal-body">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Adolf_Hitler_in_Color.jpg/800px-Adolf_Hitler_in_Color.jpg" alt="Adolf Hitler" loading="lazy">
+                <p>
+                    Adolf Hitler was the dictator of Nazi Germany from 1934 to 1945. As the Führer of the Nazi Party, Hitler implemented policies that led to World War II and the Holocaust, resulting in the deaths of millions of people. His aggressive expansionist strategies aimed at establishing a Greater Germany and eradicating perceived threats led to widespread devastation across Europe. Hitler's regime was characterized by extreme nationalism, militarism, and anti-Semitism, culminating in his eventual downfall as Allied forces closed in on Berlin.
+                </p>
+                <p>
+                    **Key Achievements:**
+                    <ul>
+                        <li>Established a totalitarian regime in Germany.</li>
+                        <li>Initiated policies leading to World War II.</li>
+                        <li>Orchestrated the Holocaust.</li>
+                        <li>Aimed to create a Greater German Reich through aggressive expansion.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benito Mussolini Modal -->
+    <div id="mussolini-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="mussolini-title">
+        <div class="modal-content">
+            <span class="modal-close" aria-label="Close modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="mussolini-title">Benito Mussolini</h2>
+            </div>
+            <div class="modal-body">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Benito_Mussolini_colored.jpg/640px-Benito_Mussolini_colored.jpg" alt="Benito Mussolini" loading="lazy">
+                <p>
+                    Benito Mussolini was the Prime Minister and Duce of Italy from 1922 until 1943. As the founder of Fascism, Mussolini established a dictatorship that emphasized authoritarian control, nationalism, and the suppression of political dissent. During World War II, Mussolini aligned Italy with the Axis Powers, participating in various military campaigns across Europe and Africa. However, his leadership faced significant challenges, leading to his eventual ousting and execution in 1945 as Italy surrendered to the Allies.
+                </p>
+                <p>
+                    **Key Achievements:**
+                    <ul>
+                        <li>Founded and led the National Fascist Party.</li>
+                        <li>Established a Fascist dictatorship in Italy.</li>
+                        <li>Allied Italy with Nazi Germany during World War II.</li>
+                        <li>Influenced the spread of Fascist ideology across Europe.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hideki Tojo Modal -->
+    <div id="tojo-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="tojo-title">
+        <div class="modal-content">
+            <span class="modal-close" aria-label="Close modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="tojo-title">Hideki Tojo</h2>
+            </div>
+            <div class="modal-body">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlVgQTiMaOR9S9EWSwXL6N9QIgkrRzEWIWLg&s" alt="Hideki Tojo" loading="lazy">
+                <p>
+                    Hideki Tojo was the Prime Minister of Japan from 1941 to 1944 and a general in the Imperial Japanese Army. As one of the key architects of Japan's wartime strategy, Tojo played a central role in Japan's military expansion across Asia and the Pacific. He was responsible for several significant military decisions, including the attack on Pearl Harbor, which led to the United States' entry into World War II. Tojo's leadership was marked by his commitment to militarism and imperialism, ultimately leading to his downfall and execution for war crimes after Japan's surrender in 1945.
+                </p>
+                <p>
+                    **Key Achievements:**
+                    <ul>
+                        <li>Served as Prime Minister of Japan during much of World War II.</li>
+                        <li>Directed Japan's military expansion in Asia and the Pacific.</li>
+                        <li>Played a pivotal role in the planning and execution of the attack on Pearl Harbor.</li>
+                        <li>Executed for war crimes following Japan's defeat.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 WWII Chronicles. All rights reserved.</p>
+        <p>Designed with passion by [Your Name]</p>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+    </footer>
+
+    <!-- AOS Library JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Responsive Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('nav ul');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked (for better UX on mobile)
+        const navItems = document.querySelectorAll('nav ul li a');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // Modal Functionality
+        const modals = document.querySelectorAll('.modal');
+        const openModalButtons = document.querySelectorAll('.card[data-modal]');
+        const closeModalButtons = document.querySelectorAll('.modal-close');
+
+        openModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal');
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'flex';
+                    modal.setAttribute('aria-hidden', 'false');
+                }
+            });
+        });
+
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = button.closest('.modal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden', 'true');
+                }
+            });
+        });
+
+        // Close modal when clicking outside the modal content
+        window.addEventListener('click', (event) => {
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden', 'true');
+                }
+            });
+        });
+
+        // Close modal with Esc key
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                modals.forEach(modal => {
+                    if (modal.style.display === 'flex') {
+                        modal.style.display = 'none';
+                        modal.setAttribute('aria-hidden', 'true');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
